@@ -190,8 +190,7 @@ alias whoson='last -w|tac'
 alias myip='hostname -i'
 alias masterlist='vim /byu/scripts/ansible/daily_Audit/masterlist.txt'
 alias profile='vim $HOME/.profile'
-alias scripts='cd /byu/scripts/tychart'
-alias home='cd $tycahrthome'
+alias home='cd $HOME'
 alias details=get_machine_info
 alias sssdcache='systemctl stop sssd && rm -rf /var/lib/sss/db/* && systemctl start sssd'
 alias c='clear'
@@ -264,7 +263,7 @@ fi
 
 ##### Trying to do autocomplete for typing in server names
 # Currently doesn't work
-#complete -W "$(echo` cat "$tycharthome/.ssh/known_hosts" |cut -f 1 -d ' ' |  tr , '\n' | cut -f 2 -d '[' | cut -f 1 -d ']' | sort | uniq`;)" ssh
+#complete -W "$(echo` cat "$HOME/.ssh/known_hosts" |cut -f 1 -d ' ' |  tr , '\n' | cut -f 2 -d '[' | cut -f 1 -d ']' | sort | uniq`;)" ssh
 EOF
 
 read -r -d '' VIMRC_CONTENT <<'EOF'
