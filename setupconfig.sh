@@ -53,9 +53,6 @@ esac
 
 ##### User specific aliases
 
-tycharthome="/home/tychart"
-
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -68,15 +65,12 @@ alias ver='cat /etc/*-release'
 alias whoson='last -w|tac'
 alias myip='hostname -i'
 alias masterlist='vim /byu/scripts/ansible/daily_Audit/masterlist.txt'
-alias profile='vim $tycharthome/.profile'
-alias scripts='cd /byu/scripts/tychart'
-alias home='cd $tycahrthome'
+alias profile='vim $HOME/.profile'
+alias home='cd $HOME'
 alias details=get_machine_info
-alias sssdcache='systemctl stop sssd && rm -rf /var/lib/sss/db/* && systemctl start sssd'
 alias c='clear'
-alias src='source $tycharthome/.profile'
-alias vim='vim -u $tycharthome/.vimrc'
-alias mtail='multitail -cS ansible'
+alias src='source $HOME/.profile'
+alias vim='vim -u $HOME/.vimrc'
 
 ##### Set correct TERM varia#!/bin/bash
 
@@ -126,7 +120,7 @@ read -r -d '' BASHRC_CONTENT <<'EOF'
 ble. Allows vim to use alternate screen and correct color scheme
 export TERM=xterm-256color
 
-export INPUTRC="$tycharthome/.inputrc"
+export INPUTRC="$HOME/.inputrc"
 
 HISTTIMEFORMAT="%d/%m/%y %T "
 bind 'set bell-style none'#!/bin/bash
@@ -183,9 +177,6 @@ esac
 
 ##### User specific aliases
 
-tycharthome="/home/tychart"
-
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -198,20 +189,19 @@ alias ver='cat /etc/*-release'
 alias whoson='last -w|tac'
 alias myip='hostname -i'
 alias masterlist='vim /byu/scripts/ansible/daily_Audit/masterlist.txt'
-alias profile='vim $tycharthome/.profile'
+alias profile='vim $HOME/.profile'
 alias scripts='cd /byu/scripts/tychart'
 alias home='cd $tycahrthome'
 alias details=get_machine_info
 alias sssdcache='systemctl stop sssd && rm -rf /var/lib/sss/db/* && systemctl start sssd'
 alias c='clear'
-alias src='source $tycharthome/.profile'
-alias vim='vim -u $tycharthome/.vimrc'
-alias mtail='multitail -cS ansible'
+alias src='source $HOME/.profile'
+alias vim='vim -u $HOME/.vimrc'
 
 ##### Set correct TERM variable. Allows vim to use alternate screen and correct color scheme
 export TERM=xterm-256color
 
-export INPUTRC="$tycharthome/.inputrc"
+export INPUTRC="$HOME/.inputrc"
 
 HISTTIMEFORMAT="%d/%m/%y %T "
 bind 'set bell-style none'
@@ -256,7 +246,7 @@ function hostgroup() {
 
 ##### Improved root login preserves bash profile
 function ssu() {
-        sudo -H bash -rcfile $tycharthome/.profile
+        sudo -H bash -rcfile $HOME/.profile
 }
 
 shopt -s checkwinsize
