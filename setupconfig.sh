@@ -39,130 +39,7 @@ if (( $UID == 0 )); then
 fi
 EOF
 
-read -r -d '' BASHRC_CONTENT <<'EOF'
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
-
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
-
-##### User specific aliases
-
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-alias lt='ls -ltr --color=auto --group-directories-first'
-alias la='LC_COLLATE=C ls -alF --group-directories-first'
-alias ll='ls -lah --color=auto --group-directories-first'
-alias lwd='ls -ld1 --color=auto --group-directories-first "$PWD"/*'
-alias ver='cat /etc/*-release'
-alias whoson='last -w|tac'
-alias myip='hostname -i'
-alias masterlist='vim /byu/scripts/ansible/daily_Audit/masterlist.txt'
-alias profile='vim $HOME/.profile'
-alias home='cd $HOME'
-alias details=get_machine_info
-alias c='clear'
-alias src='source $HOME/.profile'
-alias vim='vim -u $HOME/.vimrc'
-
-##### Set correct TERM varia#!/bin/bash
-
-# Define the contents of each file
-read -r -d '' PROFILE_CONTENT <<'EOF'
-# ~/.profile: executed by the command interpreter for login shells.
-# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
-# exists.
-# see /usr/share/doc/bash/examples/startup-files for examples.
-# the files are located in the bash-doc package.
-
-# the default umask is set in /etc/profile; for setting the umask
-# for ssh logins, install and configure the libpam-umask package.
-#umask 022
-
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-        . "$HOME/.bashrc"
-    fi
-fi
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-
-##### Load in /etc/profile.d configurations for root
-if (( $UID == 0 )); then
-  for i in /etc/profile.d/*.sh /etc/profile.d/sh.local ; do
-    if [ -r "$i" ] && ! [[ $i == *"pwage.sh" ]]; then
-      if [ "${-#*i}" != "$-" ]; then
-        . "$i"
-      else
-        . "$i" > /dev/null
-      fi
-    fi
-  done
-fi
-EOF
-
-read -r -d '' BASHRC_CONTENT <<'EOF'
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-ble. Allows vim to use alternate screen and correct color scheme
-export TERM=xterm-256color
-
-export INPUTRC="$HOME/.inputrc"
-
-HISTTIMEFORMAT="%d/%m/%y %T "
-bind 'set bell-style none'#!/bin/bash
-
-# Define the contents of each file
-read -r -d '' PROFILE_CONTENT <<'EOF'
-# ~/.profile: executed by the command interpreter for login shells.
-# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
-# exists.
-# see /usr/share/doc/bash/examples/startup-files for examples.
-# the files are located in the bash-doc package.
-
-# the default umask is set in /etc/profile; for setting the umask
-# for ssh logins, install and configure the libpam-umask package.
-#umask 022
-
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-        . "$HOME/.bashrc"
-    fi
-fi
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-
-##### Load in /etc/profile.d configurations for root
-if (( $UID == 0 )); then
-  for i in /etc/profile.d/*.sh /etc/profile.d/sh.local ; do
-    if [ -r "$i" ] && ! [[ $i == *"pwage.sh" ]]; then
-      if [ "${-#*i}" != "$-" ]; then
-        . "$i"
-      else
-        . "$i" > /dev/null
-      fi
-    fi
-  done
-fi
-EOF
 
 read -r -d '' BASHRC_CONTENT <<'EOF'
 # ~/.bashrc: executed by bash(1) for non-login shells.
@@ -245,7 +122,8 @@ function hostgroup() {
 
 ##### Improved root login preserves bash profile
 function ssu() {
-        sudo -H bash -rcfile $HOME/.profile
+        #sudo -H HOME=$HOME bash --rcfile $HOME/.profile -i
+        sudo -H HOME=$HOME bash -i
 }
 
 shopt -s checkwinsize
@@ -260,19 +138,17 @@ else
     export PS1="\[\e[1;35m\]\u\[\e[0m\]@\[\e[0:31m\]\h\[\e[1;36m\](`get_machine_info | grep "Operating system" | cut -d " " -f 3`) \[\e[01;34m\]\w\[\e[0m\] # "
   fi
 fi
-
-##### Trying to do autocomplete for typing in server names
-# Currently doesn't work
-#complete -W "$(echo` cat "$HOME/.ssh/known_hosts" |cut -f 1 -d ' ' |  tr , '\n' | cut -f 2 -d '[' | cut -f 1 -d ']' | sort | uniq`;)" ssh
 EOF
+
+
 
 read -r -d '' VIMRC_CONTENT <<'EOF'
 syntax on
 
-set autoindent expandtab tabstop=2 shiftwidth=2
-
-set nocp
 set tabstop=2
+set shiftwidth=2
+set autoindent
+set nocp
 set number
 set expandtab
 set showcmd
@@ -321,6 +197,8 @@ augroup vimStartup
 
 augroup END
 EOF
+
+
 
 read -r -d '' INPUTRC_CONTENT <<'EOF'
 # /etc/inputrc - global inputrc for libreadline
@@ -396,20 +274,42 @@ $endif
 $endif
 EOF
 
+
+
 # Define the paths for each file
 profile_file="$HOME/.profile"
 bashrc_file="$HOME/.bashrc"
 vimrc_file="$HOME/.vimrc"
 inputrc_file="$HOME/.inputrc"
 
-# Copy the contents to the respective files
-echo "$PROFILE_CONTENT" > "$profile_file"
-echo "$BASHRC_CONTENT" > "$bashrc_file"
-echo "$VIMRC_CONTENT" > "$vimrc_file"
-echo "$INPUTRC_CONTENT" > "$inputrc_file"
+# Copy the contents to the respective files and capture errors
+echo "$PROFILE_CONTENT" > "$profile_file" 2> /tmp/profile_error
+echo "$BASHRC_CONTENT" > "$bashrc_file" 2> /tmp/bashrc_error
+echo "$VIMRC_CONTENT" > "$vimrc_file" 2> /tmp/vimrc_error
+echo "$INPUTRC_CONTENT" > "$inputrc_file" 2> /tmp/inputrc_error
 
-# Output success message
-echo "Files copied successfully!"
+# Check if any error file is not empty
+if [[ -s /tmp/profile_error || -s /tmp/bashrc_error || -s /tmp/vimrc_error || -s /tmp/inputrc_error ]]; then
+    # Output failure message
+    echo "Error: Files not copied successfully!"
+    # Print error messages
+    echo "Profile error:"
+    cat /tmp/profile_error
+    echo "Bashrc error:"
+    cat /tmp/bashrc_error
+    echo "Vimrc error:"
+    cat /tmp/vimrc_error
+    echo "Inputrc error:"
+    cat /tmp/inputrc_error
 
+    # Clean up temporary error files
+    rm -f /tmp/profile_error /tmp/bashrc_error /tmp/vimrc_error /tmp/inputrc_error
 
-
+else
+    # Output success message
+    echo "Files copied successfully!"
+    
+    # Script executed successfully, remove the script file
+    echo "Removing this setup script"
+    rm "$0"
+fi
