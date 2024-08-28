@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# What does this do?
+#    The main purpose of this script is to make the bash terminal and 
+#    vim look better and have custom common aliases
+#    This script will copy its contents into 4 files, .profile, .bashrc, .vimrc, and .inputrc
+
+# How to use this script:
+#    Copy the contents into a new file -> vim setupconfig.sh
+#    Allow exicution -> chmod 744 setupconfig.sh
+#    Run Script -> ./setupconfig.sh
+
 # Define the contents of each file
 read -r -d '' PROFILE_CONTENT <<'EOF'
 # ~/.profile: executed by the command interpreter for login shells.
