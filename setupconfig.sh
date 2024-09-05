@@ -322,6 +322,9 @@ if [[ -s /tmp/profile_error || -s /tmp/bashrc_error || -s /tmp/vimrc_error || -s
 else
     # Output success message
     echo "Files copied successfully!"
+
+    echo "Reloading .profile"
+    source ~/.profile
     
     # Script executed successfully, remove the script file
     echo "Removing this setup script"
