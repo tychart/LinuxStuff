@@ -148,6 +148,10 @@ else
     export PS1="\[\e[1;35m\]\u\[\e[0m\]@\[\e[0:31m\]\h\[\e[1;36m\](`get_machine_info | grep "Operating system" | cut -d " " -f 3`) \[\e[01;34m\]\w\[\e[0m\] # "
   fi
 fi
+
+export PATH=$PATH:~/.local/bin
+export EDITOR=vim
+
 EOF
 
 
