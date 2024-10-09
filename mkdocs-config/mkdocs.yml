@@ -1,0 +1,129 @@
+site_name: Infrastructure Docs
+
+site_url: https://byu-oit.github.io/infrastructure-docs/
+repo_url: https://github.com/byu-oit/infrastructure-docs
+edit_uri: "edit/main/docs/"
+extra:
+  generator: true
+  social:
+    - icon: fontawesome/brands/square-github
+      name: Feedback
+      link: https://github.com/ces-soc/engineering_docs/issues
+extra_css:
+  - docs/extra.css
+
+# nav:
+#   - Home: index.md
+#   - Special Page: special_page.md
+#   - Pages:
+#       - !include: '**/*.md'
+
+theme: 
+  name: material
+  features:
+    - content.tabs.link
+    - content.code.copy
+    - content.code.annotate
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.tabs
+    # - navigation.sections
+    - navigation.path
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/lightbulb-group
+        name: Light Mode
+      primary: blue
+    
+    - scheme: slate
+      toggle:
+        icon: material/lightbulb-group
+        name: Dark Mode
+      primary: blue
+    
+
+    
+    # - scheme: greyscale
+    #   toggle:
+    #     icon: material/lightbulb-group
+    #     name: Greyscale
+    #   primary: grey
+    #   accent: white
+    
+    # - scheme: salmon
+    #   toggle:
+    #     icon: material/lightbulb-group
+    #     name: Salmon
+    #   primary: Salmon
+    #   accent: red
+
+    # - scheme: green
+    #   toggle:
+    #     icon: material/lightbulb-group
+    #     name: Green
+    #   primary: green
+    #   accent: teal
+
+    # - scheme: red
+    #   toggle:
+    #     icon: material/lightbulb-group
+    #     name: Red
+    #   primary: red
+    #   accent: deep orange
+
+    # - scheme: purple
+    #   toggle:
+    #     icon: material/lightbulb-group
+    #     name: Purple
+    #   primary: purple
+    #   accent: red
+
+    # - scheme: fuschia
+    #   toggle:
+    #     icon: material/lightbulb-group
+    #     name: Fuschia
+    #   primary: pink
+
+markdown_extensions:
+  - admonition
+  - abbr
+  - attr_list
+  - md_in_html
+  - def_list
+  - footnotes
+  - tables
+  - codehilite:
+      guess_lang: false
+  - meta
+  - toc:
+      permalink: true
+      toc_depth: 5
+  # - pymdownx.arithmatex
+  # - pymdownx.betterem:
+  #     smart_enable: all
+  # - pymdownx.caret
+  # - pymdownx.critic
+  # - pymdownx.details
+  # - pymdownx.emoji: 
+  #     emoji_index: !!python/name:materialx.emoji.twemoji 
+  #     emoji_generator: !!python/name:materialx.emoji.to_svg 
+  # - pymdownx.keys
+  # - pymdownx.inlinehilite
+  # - pymdownx.magiclink
+  # - pymdownx.mark
+  # - pymdownx.smartsymbols
+  # - pymdownx.snippets:
+  #     check_paths: true
+  # - pymdownx.superfences
+  # - pymdownx.tabbed:
+  #     alternate_style: true
+  # - pymdownx.tasklist:
+  #     custom_checkbox: true
+  # - pymdownx.tilde
+
+plugins:
+  - search # necessary for search to work
+  - awesome-pages
+  - git-revision-date-localized
