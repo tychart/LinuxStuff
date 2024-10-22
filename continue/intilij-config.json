@@ -3,19 +3,21 @@
     {
       "model": "codegemma",
       "provider": "ollama",
-      "title": "Ollama codegemma"
-
+      "title": "Ollama codegemma",
+      "apiBase": "http://192.168.10.35:11434"
     }
   ],
   "tabAutocompleteModel": {
     "title": "StarCoder2 3B",
     "provider": "ollama",
-    "model": "starcoder2:3b"
+    "model": "starcoder2:3b",
+    "apiBase": "http://192.168.10.35:11434"
   },
   "embeddingsProvider": {
-      "provider": "ollama",
-      "model": "nomic-embed-text"
-    },
+    "provider": "ollama",
+    "model": "nomic-embed-text",
+    "apiBase": "http://192.168.10.35:11434"
+  },
   "customCommands": [
     {
       "name": "test",
