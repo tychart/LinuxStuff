@@ -1,3 +1,89 @@
+# Access Internal Webserver Externally and Internally with DNS Resolution
+
+## Assumptions
+
+- **External IP Address**: `123.45.67.89`
+- **LAN Interface IP**: `192.168.10.1/24`
+- **Webserver IP**: `192.168.10.30` (running HTTP on port 80 and HTTPS on port 443)
+- **Domain**: `mysite.com`
+- **DNS Record**: An A record for `www.mysite.com` points to `123.45.67.89` (your external IP address)
+
+## Steps
+
+### 1. Create Aliases to Simplify Configuration
+
+1. **Navigate to**: `Firewall` -> `Aliases` -> `View`
+2. **Click the "Add a new alias" button**.
+3. **Enter the following information**:
+    - **Type**: Host(s)
+    - **Name**: `Webserver`
+    - **Description**: `The webserver host`
+    - **Host(s)**: `192.168.10.30`
+    - **Description**: `Webserver IP address`
+4. **Click Save**.
+5. **Click the "Add a new alias" button again**.
+6. **Enter the following information**:
+    - **Type**: Port(s)
+    - **Name**: `Websrv_Ports`
+    - **Description**: `The webserver Ports`
+    - **Port(s)**: `80`
+    - **Description**: `HTTP port`
+7. **Click the plus sign to add another line** and enter the following information:
+    - **Port(s)**: `443`
+    - **Description**: `HTTPS port`
+8. **Click Save** and **Apply Settings**.
+
+### 2. Change OPNsense Web GUI Port (Optional)
+
+If you're forwarding both port 80 (HTTP) and port 443 (HTTPS), change the web GUI port for OPNsense to avoid conflicts. For example, set it to port 440.
+
+1. **Navigate to**: `System` -> `Settings` -> `Administration`.
+2. **Enter** `440` in the **TCP port** field.
+3. **Click Save**.
+4. The OPNsense web GUI will automatically reconnect in 20 seconds using the new port.
+
+### 3. Add Port Forwarding Rule for Webserver
+
+1. **Navigate to**: `Firewall` -> `NAT` -> `Port Forward`.
+2. **Click the "Add" button** to create a new Port Forward rule.
+3. **Select the following information**:
+    - **Interface**: `WAN`
+    - **TCP/IP version**: `IPv4`
+    - **Protocol**: `TCP`
+    - **Destination**: `WAN Address`
+    - **Port range**:
+        - **From**: `Websrv_Ports`
+        - **To**: `Websrv_Ports`
+    - **Redirect target IP**: `Webserver` (this alias will be available from the dropdown)
+    - **Redirect target ports**: `Websrv_Ports`
+    - **NAT reflection**: `Enable (Pure NAT)`
+    - **Filter rule association**: `Add associated filter rule`
+4. **Click Save** and **Apply Settings**.
+
+## Expected Outcome
+
+- The external DNS server will resolve `www.mysite.com` to your external IP address (`123.45.67.89`).
+- The NAT/Port Forward rule will forward this traffic to your webserver (`192.168.10.30`).
+- If internally `www.mysite.com` resolves to the external IP address, NAT Reflection will send the traffic back to your webserver internally.
+
+---
+
+I hope this helps you set up your internal webserver access both externally and internally! 
+
+Kind regards,  
+**Bert**
+
+
+
+
+
+
+
+
+
+
+```
+This is the original forum post, just incase chatGPT changed a step or something when formating as markdown
 https://forum.opnsense.org/index.php?topic=6155.0
 
 Hi Newbiewifi,
@@ -89,3 +175,4 @@ I hope this info helps.
 
 Kind regards,
 Bert
+```
