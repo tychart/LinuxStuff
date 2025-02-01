@@ -60,6 +60,11 @@ If you're forwarding both port 80 (HTTP) and port 443 (HTTPS), change the web GU
     - **Filter rule association**: `Add associated filter rule`
 4. **Click Save** and **Apply Settings**.
 
+### 4. Make Services Accessable From LAN, Not Just WAN
+1. **Navigate to**: `Firewall` -> `Settings` -> `Advanced`.
+2. **Check Boxes**: `Reflection for port forwards` and `Automatic outbound NAT for Reflection`
+3. **Click Save** and **Reboot Router**.
+
 ## Expected Outcome
 
 - The external DNS server will resolve `www.mysite.com` to your external IP address (`123.45.67.89`).
