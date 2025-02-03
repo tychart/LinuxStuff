@@ -1,4 +1,4 @@
-Here’s your reformatted version with a clean, structured layout while preserving all exact commands and locations:
+https://superuser.com/questions/1424478/can-i-hide-native-tabs-at-the-top-of-firefox
 
 ---
 
