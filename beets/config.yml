@@ -1,5 +1,5 @@
 plugins: fetchart lyrics rewrite scrub replaygain lastgenre chroma web info edit
-directory: /music
+directory: /music/Library
 library: /config/musiclibrary.blb
 art_filename: cover
 threaded: yes
