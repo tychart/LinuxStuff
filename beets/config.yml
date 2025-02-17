@@ -27,6 +27,7 @@ lastgenre:
 
 fetchart:
     auto: yes
+    cover_names: cover front art album folder
 
 lyrics:
     force: yes
