@@ -1,6 +1,6 @@
 services:
   mc-latest:
-    image: itzg/minecraft-server
+    image: itzg/minecraft-server:latest
     tty: true
     stdin_open: true
     ports:
