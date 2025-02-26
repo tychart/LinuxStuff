@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=GDLauncher
+Comment=Open-source Minecraft launcher
+Exec=sh -c 'exec $(ls /home/tychart/programs/appimages/gdlauncher/*.appimage | head -n 1)'
+Icon=/home/tychart/programs/appimages/gdlauncher/icon.png
+Terminal=false
+Type=Application
+Categories=Game;Utility;
+StartupWMClass=GDLauncher
