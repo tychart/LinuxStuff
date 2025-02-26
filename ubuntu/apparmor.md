@@ -110,3 +110,80 @@ Citations:
 
 ---
 Answer from Perplexity: pplx.ai/share
+
+
+
+
+
+
+The core issue is that your **sysctl kernel parameters aren't persisting across reboots** despite being in `/etc/sysctl.conf`. This happens because some Linux distributions override these configurations through other mechanisms. Here's the breakdown and fix:
+
+---
+
+### 🔍 Root Cause
+1. **Sysctl Configuration Overrides**  
+   Modern systems prioritize files in `/etc/sysctl.d/` over `/etc/sysctl.conf`. A conflicting file (e.g., `99-disable-unpriv-userns.conf`) might be resetting your values at boot.
+
+2. **AppArmor/Firejail Re-locking**  
+   Security subsystems might re-enable restrictions after reboot, especially if you're using Ubuntu/Debian with custom profiles.
+
+---
+
+### 🛠️ Permanent Fix
+#### 1. Create a Dedicated Sysctl File
+```bash
+sudo nano /etc/sysctl.d/99-appimage-userns.conf
+```
+Add these lines:
+```bash
+kernel.apparmor_restrict_unprivileged_userns=0
+kernel.unprivileged_userns_clone=1
+```
+
+#### 2. Block Overriding Configurations
+Check for conflicting files:
+```bash
+grep -r "unprivileged_userns" /etc/sysctl.d/ /usr/lib/sysctl.d/
+```
+If any files (e.g., `99-disable-unpriv-userns.conf`) contain conflicting values, either:
+- Delete them: `sudo rm /path/to/conflicting-file.conf`
+- Comment out their lines with `#`
+
+#### 3. Apply Changes Immediately
+```bash
+sudo sysctl --system  # Applies all sysctl configurations
+```
+
+#### 4. Verify Persistence
+After rebooting, confirm the settings are active:
+```bash
+sysctl kernel.apparmor_restrict_unprivileged_userns kernel.unprivileged_userns_clone
+```
+
+---
+
+### ⚡ Electron Sandbox Workaround (If Issues Persist)
+The error `SUID sandbox helper binary [...] mode 4755` indicates a separate Electron sandbox issue. Two options:
+
+1. **Run with `--no-sandbox`** (Less secure):
+   ```bash
+   ./GDLauncher__*.AppImage --no-sandbox
+   ```
+
+2. **Fix Sandbox Permissions** (Preferred):
+   ```bash
+   chmod 4755 /tmp/.mount_GDLaun*/chrome-sandbox
+   ```
+
+---
+
+### 🔄 Why `sudo sysctl -p` Temporarily Fixes It
+- `sysctl -p` only reloads `/etc/sysctl.conf`, not the newer `.conf` files in `/etc/sysctl.d/`
+- Your original config works temporarily but gets overridden at next boot by higher-priority configurations
+
+---
+
+After implementing these changes, your AppImages should work persistently across reboots. If you still encounter issues, check `journalctl -u systemd-sysctl` for boot-time sysctl errors.
+
+---
+Answer from Perplexity: pplx.ai/share
