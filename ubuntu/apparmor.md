@@ -1,3 +1,214 @@
+# **Fixing AppImages Not Launching on Ubuntu 24.10**
+
+If you're experiencing issues running AppImages on Ubuntu 24.10, particularly errors related to **SUID sandboxing**, follow this guide to resolve them effectively.
+
+---
+
+## **Understanding the Issue**
+
+When attempting to launch an AppImage (e.g., GDLauncher), you may encounter an error like this:
+
+```bash
+./GDLauncher__2.0.24__linux__x64.AppImage
+[ERROR] The SUID sandbox helper binary was found, but is not configured correctly.
+Rather than run without sandboxing, I'm aborting now.
+You need to make sure that /tmp/.mount_GDLaun*/chrome-sandbox is owned by root and has mode 4755.
+```
+
+This happens because **Ubuntu 24.10 restricts unprivileged user namespaces**, preventing certain Electron-based applications from running inside their sandbox.
+
+---
+
+## **Solutions**
+
+Choose one of the following methods to fix this issue based on your needs and security preferences.
+
+### **1️⃣ Quick Temporary Fix (Less Secure)**
+If you need a quick solution without modifying system settings, launch the AppImage with:
+
+```bash
+./GDLauncher__2.0.24__linux__x64.AppImage --no-sandbox
+```
+
+📌 **Warning:** This disables Chromium’s security sandbox, making the application less secure.
+
+---
+
+### **2️⃣ Permanent System-Wide Fix (Recommended for Most Users)**
+This method ensures AppImages run properly while keeping sandboxing enabled.
+
+#### **Step 1: Adjust Kernel Parameters**
+Run the following commands to allow user namespace cloning:
+
+```bash
+sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+sudo sysctl -w kernel.unprivileged_userns_clone=1
+```
+
+#### **Step 2: Make Changes Persistent**
+Edit your sysctl configuration file:
+
+```bash
+sudo nano /etc/sysctl.d/99-appimage-userns.conf
+```
+
+Add these lines:
+
+```bash
+kernel.apparmor_restrict_unprivileged_userns=0
+kernel.unprivileged_userns_clone=1
+```
+
+Save and exit, then apply changes immediately:
+
+```bash
+sudo sysctl --system
+```
+
+✅ **This ensures the settings persist after reboot.**
+
+---
+
+### **3️⃣ AppImage Extraction Method (Best for Security & Stability)**
+If you want a more secure alternative without modifying system-wide settings:
+
+#### **Step 1: Extract the AppImage**
+```bash
+./GDLauncher__2.0.24__linux__x64.AppImage --appimage-extract
+```
+
+#### **Step 2: Adjust Chrome-Sandbox Permissions**
+```bash
+cd squashfs-root
+sudo chown root:root chrome-sandbox
+sudo chmod 4755 chrome-sandbox
+```
+
+#### **Step 3: Run the Extracted App**
+```bash
+./AppRun
+```
+
+✅ **This avoids security risks while keeping the application fully functional.**
+
+---
+
+### **4️⃣ Alternative Launch Method**
+Some AppImages support a special flag that can resolve sandboxing issues automatically:
+
+```bash
+./GDLauncher__2.0.24__linux__x64.AppImage --appimage-extract-and-run
+```
+
+This method avoids using a temporary mount, which can cause permission errors.
+
+---
+
+## **Additional Troubleshooting**
+
+### 🔍 **Why Do the Fixes Reset After Reboot?**
+
+If your kernel parameter changes are not persisting:
+1. Ubuntu prioritizes `/etc/sysctl.d/` over `/etc/sysctl.conf`, so conflicting files may override your settings.
+2. Use this command to check for conflicts:
+   ```bash
+   grep -r "unprivileged_userns" /etc/sysctl.d/ /usr/lib/sysctl.d/
+   ```
+3. If a conflicting file (e.g., `99-disable-unpriv-userns.conf`) is found, remove or modify it:
+   ```bash
+   sudo rm /path/to/conflicting-file.conf
+   ```
+
+After making changes, **reboot and verify** with:
+
+```bash
+sysctl kernel.apparmor_restrict_unprivileged_userns kernel.unprivileged_userns_clone
+```
+
+---
+
+## **Security Recommendations**
+- **Preferred Method:** Use **Method 3 (AppImage Extraction)** for the best balance of security and functionality.
+- **Avoid Running with `sudo`** – This can introduce permission issues.
+- **For Enterprise Users:** Consider using **Flatpak or Snap** instead of AppImages for better security integration.
+
+---
+
+After applying these fixes, your AppImages should work smoothly on Ubuntu 24.10! 🚀
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr/>
+---
+
+Old unformatted # Fix Appimages not Launching
+
 ```bash
 tychart@ubudesk(ubu24.10) ~/Downloads/temp/supertemp $ sudo sysctl kernel.unprivileged_userns_clone=1
 [sudo] password for tychart: 
@@ -114,6 +325,9 @@ Answer from Perplexity: pplx.ai/share
 
 
 
+
+
+## When Following Option 2 on the previous answer, the changes are not persistant accross reboots
 
 
 The core issue is that your **sysctl kernel parameters aren't persisting across reboots** despite being in `/etc/sysctl.conf`. This happens because some Linux distributions override these configurations through other mechanisms. Here's the breakdown and fix:
