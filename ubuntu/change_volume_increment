@@ -1,1 +1,3 @@
 gsettings set org.gnome.settings-daemon.plugins.media-keys volume-step 2
+
+From this post: https://www.reddit.com/r/Ubuntu/comments/1cqeq2f/adjust_volume_step_increments/
