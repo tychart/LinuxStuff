@@ -149,6 +149,41 @@ else
   fi
 fi
 
+##### Custom ctrl+backspace kill word behavior
+# Define a custom widget that deletes text backward up to our chosen boundaries.
+my_custom_backwards_kill_word() {
+    local line=$READLINE_LINE
+    local pos=$READLINE_POINT
+
+    # Define the set of boundary characters:
+    # This regex matches any whitespace, slash, or period.
+    local boundary_chars="[^[:alnum:]]"               # This will break on every non alphanumeric char
+    #local boundary_chars="[[:space:]/\.]"            # This will break on space, forward-slash and period
+
+    if [[ $READLINE_POINT != 0 ]]; then               # Make sure that there is actually something to delete
+
+      # At least delete the first character behind the cursor, even if it is a boundry character
+      (( pos-- ))
+
+      # Loop backwards from the cursor until we hit a boundary character
+      while (( pos > 0 )); do
+          local char=${line:pos-1:1}
+          if [[ $char =~ $boundary_chars ]]; then
+              break
+          fi
+          (( pos-- ))
+      done
+
+      # Remove the text from the calculated position to the original cursor position.
+      READLINE_LINE="${line:0:pos}${line:READLINE_POINT}"
+      READLINE_POINT=$pos
+    fi
+}
+
+# Bind the new widget to a key sequence (here Ctrl-H is used as an example).
+# (Make sure the key sequence you choose is actually sent uniquely by your terminal.)
+bind -x '"\C-h": my_custom_backwards_kill_word'
+
 export PATH=$PATH:~/.local/bin
 export EDITOR=vim
 
