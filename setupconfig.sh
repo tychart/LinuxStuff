@@ -83,11 +83,21 @@ alias sssdcache='systemctl stop sssd && rm -rf /var/lib/sss/db/* && systemctl st
 alias c='clear'
 alias src='source $HOME/.profile'
 alias vim='vim -u $HOME/.vimrc'
+alias k='kubectl'
+alias venv='source venv/bin/activate'
+alias gdu='/byu/adm.tychart/programs/bin/gdu_linux_amd64'
+alias work='python3 /byu/scripts/students/tychart/ansible/python/leave_calculator.py'
 
 ##### Set correct TERM variable. Allows vim to use alternate screen and correct color scheme
 export TERM=xterm-256color
 
 export INPUTRC="$HOME/.inputrc"
+
+# Make bash append every command immediately to the history file
+#  history -a: Append current session’s new commands to $HISTFILE
+#  history -n: Read new commands from $HISTFILE (useful if another session added something)
+#export PROMPT_COMMAND='history -a; history -n'
+PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
 
 HISTTIMEFORMAT="%d/%m/%y %T "
 bind 'set bell-style none'
@@ -130,10 +140,13 @@ function hostgroup() {
   kinit adm.tychart@ENTRALO-PROD.BYU.EDU && ipa host-show $name | grep host-groups: | sed 's/.*://' | xargs -n 1
 }
 
-##### Improved root login preserves bash profile
 function ssu() {
-        #sudo -H HOME=$HOME bash --rcfile $HOME/.profile -i
-        sudo -H HOME=$HOME bash -i
+  # 1. Preserve your HOME in sudo,
+  # 2. Export HOME again so bash picks up YOUR rcfile,
+  # 3. Launch bash as an interactive shell reading only your ~/.bashrc
+  sudo --preserve-env=HOME \
+       env HOME="$HOME"                              \
+       bash --rcfile "$HOME/.bashrc" -i
 }
 
 shopt -s checkwinsize
@@ -142,7 +155,7 @@ shopt -s checkwinsize
 if [ "$TERM" == "xterm-color" ]; then
   export PS1="\u@\h \w $"
 else
-  if (( $UID != 0 )); then
+  if (( $EUID != 0 )); then
     export PS1="\[\e[1;32m\]\u\[\e[0m\]@\[\e[0;31m\]\h\[\e[1;36m\](`get_machine_info | grep "Operating system" | cut -d " " -f 3`) \[\e[1;34m\]\w \[\e[0m\]$ \[\e[0m\]"
   else
     export PS1="\[\e[1;35m\]\u\[\e[0m\]@\[\e[0:31m\]\h\[\e[1;36m\](`get_machine_info | grep "Operating system" | cut -d " " -f 3`) \[\e[01;34m\]\w\[\e[0m\] # "
@@ -183,10 +196,6 @@ my_custom_backwards_kill_word() {
 # Bind the new widget to a key sequence (here Ctrl-H is used as an example).
 # (Make sure the key sequence you choose is actually sent uniquely by your terminal.)
 bind -x '"\C-h": my_custom_backwards_kill_word'
-
-export PATH=$PATH:~/.local/bin
-export EDITOR=vim
-
 EOF
 
 
