@@ -2,6 +2,7 @@ Hmm, I just tried 2 different apps to hide the nav bar, but they say that they d
 One thing that I could do is switch to the stock navigation gestures and would I be able to disable the side swiping of them in favor of the edge gestures app? 
 I am totaly fine with the pill at the bottom, that is exactly what I like, I just want to not have the swiping from the left or right back buttons to interfear with edge gestures
 
+---
 
 Thanks for clarifying — and that's great context.
 
