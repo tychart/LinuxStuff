@@ -1,0 +1,18 @@
+services:
+  obsidian-livesync:
+    image: couchdb:3.3.3
+    container_name: obsidian-livesync
+    environment:
+      - #COUCHDB_USER=obsidian_user # Define this secret in the .env file
+      - #COUCHDB_PASSWORD=database_password # Define this secret in the .env file
+      - TZ=America/Denver
+    volumes:
+      - ./data:/opt/couchdb/data
+      - ./local.d:/opt/couchdb/etc/local.d # Fixed relative path format
+    ports:
+      - 5984:5984
+    restart: unless-stopped
+    labels:
+      net.unraid.docker.webui: http://[IP]:5984/_utils # Corrected the placeholder for PORT
+      net.unraid.docker.icon: https://couchdb.apache.org/image/couch@2x.png
+      net.unraid.docker.shell: /bin/bash
