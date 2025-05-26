@@ -1,0 +1,15 @@
+services:
+  scribble:
+    image: biosmarcel/scribble.rs:latest
+    ports:
+      - 8080:8080 # Change the first 8080 to your desired external port
+    environment:
+      - PORT=8080
+      # Optional environment variables
+      # - NETWORK_ADDRESS=0.0.0.0 # Example
+      # - ROOT_PATH=/scribble # Example
+      # - CORS_ALLOWED_ORIGINS=* # Example
+      # - CORS_ALLOW_CREDENTIALS=true # Example
+      # - LOBBY_CLEANUP_INTERVAL=120s # Example
+      # - LOBBY_CLEANUP_PLAYER_INACTIVITY_THRESHOLD=90s # Example
+    restart: unless-stopped
