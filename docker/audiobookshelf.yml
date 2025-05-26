@@ -1,0 +1,14 @@
+services:
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    ports:
+      - 13378:80
+    restart: unless-stopped
+    volumes:
+      - /mnt/pool/StorageNAS/Media/Audio/AudioBooks:/audiobooks
+      - /mnt/pool/StorageNAS/Media/Audio/Podcasts:/podcasts
+      - /mnt/pool/StorageNAS/docker/audiobookshelf/config:/config
+      - /mnt/pool/StorageNAS/Media/Audio/AudioBooks/metadata:/metadata
+    environment:
+      - TZ=America/Denver
