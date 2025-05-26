@@ -1,0 +1,27 @@
+services:
+  infrared:
+    image: haveachin/infrared:latest
+    container_name: infrared
+    restart: always
+    ports:
+      - 25565:25565/tcp
+    volumes:
+      - ./data/infrared:/etc/infrared
+  crafty:
+    container_name: crafty
+    image: registry.gitlab.com/crafty-controller/crafty-4:latest
+    restart: always
+    environment:
+      - TZ=America/Denver
+    ports:
+      - 8443:8443 # HTTPS
+      - 8123:8123 # DYNMAP
+      - 19132:19132/udp # BEDROCK
+      - 25566-25600:25566-25600 # MC SERV PORT RANGE
+    volumes:
+      - ./data/crafty/backups:/crafty/backups
+      - ./data/crafty/logs:/crafty/logs
+      - ./data/crafty/servers:/crafty/servers
+      - ./data/crafty/config:/crafty/app/config
+      - ./data/crafty/import:/crafty/import
+networks: {}
