@@ -1,0 +1,17 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
+    restart: unless-stopped
+    ports:
+      - 8434:80
+    volumes:
+      - ./filebrowser:/config
+      - /mnt/pool/StorageNAS/:/srv
+    environment:
+      - FILEBROWSER_CONFIG=/config/filebrowser.json
+    networks:
+      - filebrowser-net
+networks:
+  filebrowser-net:
+    driver: bridge
