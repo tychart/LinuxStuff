@@ -85,8 +85,6 @@ alias src='source $HOME/.profile'
 alias vim='vim -u $HOME/.vimrc'
 alias k='kubectl'
 alias venv='source venv/bin/activate'
-alias gdu='/byu/adm.tychart/programs/bin/gdu_linux_amd64'
-alias work='python3 /byu/scripts/students/tychart/ansible/python/leave_calculator.py'
 
 ##### Set correct TERM variable. Allows vim to use alternate screen and correct color scheme
 export TERM=xterm-256color
@@ -128,16 +126,6 @@ function get_machine_info() {
   echo IP address: $ip
   echo Operating system: $ver
   printf "******************************\n"
-}
-
-##### Function to show the hostgroup of the current host
-function hostgroup() {
-  if ! [[ -z $1 ]]; then
-    name=$1
-  else
-    name=$HOSTNAME
-  fi
-  kinit adm.tychart@ENTRALO-PROD.BYU.EDU && ipa host-show $name | grep host-groups: | sed 's/.*://' | xargs -n 1
 }
 
 function ssu() {
@@ -309,9 +297,6 @@ $if mode=emacs
 "\e[5D": backward-word
 "\e\e[C": forward-word
 "\e\e[D": backward-word
-
-# mapping to Ctrl-backspace delete words
-"\C-H": shell-backward-kill-word
 
 $if term=rxvt
 "\e[7~": beginning-of-line
