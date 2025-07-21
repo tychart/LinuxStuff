@@ -1,0 +1,23 @@
+services:
+  backrest:
+    container_name: backrest
+    environment:
+      - BACKREST_DATA=/data
+      - BACKREST_CONFIG=/config/config.json
+      - XDG_CACHE_HOME=/cache
+      - TMPDIR=/tmp
+      - TZ=America/Los_Angeles
+    hostname: backrest
+    image: garethgeorge/backrest:latest
+    ports:
+      - '9898:9898'
+    restart: unless-stopped
+    volumes:
+      - ./backrest/data:/data
+      - ./backrest/config:/config
+      - ./backrest/cache:/cache
+      - ./backrest/tmp:/tmp
+      - /mnt/pool/nas/home/tychart/programs/rclone:/root/.config/rclone
+      - /mnt/pool/nas/home/tychart/.ssh/homesshkey:/root/.ssh/id_rsa:ro
+      - /mnt/pool/nas/home/tychart/.ssh/known_hosts:/root/.ssh/known_hosts:ro
+      - /mnt/pool/nas:/userdata/
