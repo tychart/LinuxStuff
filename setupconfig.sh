@@ -89,6 +89,8 @@ alias venv='source venv/bin/activate'
 ##### Set correct TERM variable. Allows vim to use alternate screen and correct color scheme
 export TERM=xterm-256color
 
+export SYSTEMD_EDITOR=vim
+
 export INPUTRC="$HOME/.inputrc"
 
 # Make bash append every command immediately to the history file
