@@ -84,7 +84,7 @@ alias c='clear'
 alias src='source $HOME/.profile'
 alias vim='vim -u $HOME/.vimrc'
 alias k='kubectl'
-alias venv='source venv/bin/activate'
+alias venv='source .venv/bin/activate'
 
 ##### Set correct TERM variable. Allows vim to use alternate screen and correct color scheme
 export TERM=xterm-256color
