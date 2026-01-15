@@ -1,5 +1,7 @@
 # How to install and launch Microsoft VibeVoice
 
+Mostly following [These Instructions](https://deepwiki.com/vibevoice-community/VibeVoice/2.1-installation)
+
 ```bash
 sudo docker run --privileged --net=host --ipc=host --ulimit memlock=-1:-1 --ulimit stack=-1:-1 -p 7860:7860 --gpus all --rm -it nvcr.io/nvidia/pytorch:24.07-py3
 
