@@ -320,6 +320,10 @@ $endif
 EOF
 
 
+# Update the alternatives to set vim as the default editor
+sudo update-alternatives --set editor /usr/bin/vim
+
+
 
 # Define the paths for each file
 profile_file="$HOME/.profile"
