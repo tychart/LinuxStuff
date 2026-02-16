@@ -321,7 +321,7 @@ EOF
 
 
 # Update the alternatives to set vim as the default editor
-sudo update-alternatives --set editor /usr/bin/vim
+sudo update-alternatives --set editor /usr/bin/vim.basic
 
 
 
