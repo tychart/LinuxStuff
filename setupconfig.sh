@@ -359,7 +359,7 @@ else
     echo "Files copied successfully!"
 
     # Add custom git log alias
-    git config --global alias.lg "log --graph --all --decorate --pretty=format:'%C(auto)%h%Creset %C(yellow)%d%Creset%s %C(blue)%an%Creset %C(green)(%ar)%Creset'"
+    git config --global alias.lg "log --graph --all --decorate --pretty=format:'%C(blue)%h%Creset%C(yellow)%d%Creset %s %C(blue)%an%Creset %C(green)(%ar)%Creset'"
 
     echo "Reloading .profile"
     source ~/.profile
