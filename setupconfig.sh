@@ -102,6 +102,22 @@ PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
 HISTTIMEFORMAT="%d/%m/%y %T "
 bind 'set bell-style none'
 
+# Enable bash completion framework
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+  . /usr/share/bash-completion/bash_completion
+elif [ -f /etc/bash_completion ]; then
+  . /etc/bash_completion
+fi
+
+# Load git completion
+if [ -f /usr/share/bash-completion/completions/git ]; then
+  . /usr/share/bash-completion/completions/git
+elif [ -f /usr/share/git/completion/git-completion.bash ]; then
+  . /usr/share/git/completion/git-completion.bash
+elif [ -f /etc/bash_completion.d/git ]; then
+  . /etc/bash_completion.d/git
+fi
+
 ##### Modified mkdir command that cds into the new directory
 function mmkdir() {
   command mkdir -p $1; cd $1
