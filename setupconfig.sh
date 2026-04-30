@@ -377,6 +377,9 @@ else
     # Add custom git log alias
     git config --global alias.lg "log --graph --all --decorate --pretty=format:'%C(blue)%h%Creset%C(yellow)%d%Creset %s %C(blue)%an%Creset %C(green)(%ar)%Creset'"
 
+    # Set git defualt primary branch to be main instead of master
+    git config --global init.defaultBranch main  
+
     echo "Reloading .profile"
     source ~/.profile
     
