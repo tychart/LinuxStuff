@@ -1511,11 +1511,56 @@ end
 # ---------------------------------------------------------------------------
 # Key bindings
 # ---------------------------------------------------------------------------
+# Delete backward to the nearest non-alphanumeric character. This makes
+# Ctrl+Backspace safer for paths by stopping at punctuation such as /, ., -,
+# and _ instead of deleting an entire path component chain at once.
 
-function fish_user_key_bindings
-    bind \cw backward-kill-word
-    bind \ch backward-kill-word
+function __safe_backward_kill_word --description 'Safely delete backward to punctuation/whitespace boundary'
+    set -l line (commandline -b)
+    set -l point (commandline -C)
+
+    if test "$point" -le 0
+        return
+    end
+
+    # commandline -C is zero-based. Start by including the character directly
+    # before the cursor, then walk left while the preceding chars are alnum.
+    set -l pos (math $point - 1)
+
+    while test "$pos" -gt 0
+        # Fish string indexes are one-based. This is the char before $pos.
+        set -l char (string sub -s $pos -l 1 -- "$line")
+
+        if not string match -rq '^[[:alnum:]]$' -- "$char"
+            break
+        end
+
+        set pos (math $pos - 1)
+    end
+
+    set -l before ''
+    set -l after ''
+
+    if test "$pos" -gt 0
+        set before (string sub -s 1 -l $pos -- "$line")
+    end
+
+    if test "$point" -lt (string length -- "$line")
+        set after (string sub -s (math $point + 1) -- "$line")
+    end
+
+    commandline -r -- "$before$after"
+    commandline -C $pos
+    commandline -f repaint
 end
+
+# Ctrl+Backspace is terminal-dependent:
+# - Windows Terminal sends ctrl-w
+# - some terminals send ctrl-h
+# - Ghostty sends ctrl-backspace
+bind ctrl-w __safe_backward_kill_word
+bind ctrl-h __safe_backward_kill_word
+bind ctrl-backspace __safe_backward_kill_word
 
 # ---------------------------------------------------------------------------
 # Prompt
